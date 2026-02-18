@@ -695,7 +695,7 @@ This is **{abs(aov_lift):.1f}% {"higher" if aov_lift > 0 else "lower"}** than fu
 
 # --- New Section: Product Performance ---
 st.divider()
-st.header("📦 TESTING  Product Performance")
+st.header("📦 TESTING Product Performance")
 
 try:
     # 1. Load the new table
