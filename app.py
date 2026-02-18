@@ -678,11 +678,47 @@ with c2:
 with c3:
     st.metric("Revenue Contribution", f"{disc_rev_pct:.1f}%", help="Percentage of total revenue driven by discounted orders.")
 
-
-
 # 5. Fixed Dynamic Data Insight
 st.info(f"""
 **💡 Data Insight:** While discounted orders represent only **{disc_order_pct:.1f}%** of total volume, they have an Average Order Value of **${df_disc.loc[0, 'AOV']:,.2f}**. 
 
 This is **{abs(aov_lift):.1f}% {"higher" if aov_lift > 0 else "lower"}** than full-price orders, confirming that discounts are successfully driving "upselling" behavior—likely pushing customers to add more items to their cart to meet discount thresholds.
 """)
+
+
+
+
+
+
+
+
+
+# --- New Section: Product Performance ---
+st.divider()
+st.header("📦 TESTING  Product Performance")
+
+try:
+    # 1. Load the new table
+    df_products = load_gold_data("product_performance")
+    
+    # 2. Add a simple visualization
+    col_p1, col_p2 = st.columns(2)
+    
+    with col_p1:
+        st.subheader("Top Products by Revenue")
+        fig_prod = px.bar(
+            df_products.sort_values('total_revenue', ascending=False).head(10),
+            x='product_name', 
+            y='total_revenue',
+            color='category',
+            title="Top 10 Products"
+        )
+        st.plotly_chart(fig_prod, use_container_width=True)
+        
+    with col_p2:
+        st.subheader("Category Distribution")
+        fig_cat = px.pie(df_products, values='total_revenue', names='category', hole=0.4)
+        st.plotly_chart(fig_cat, use_container_width=True)
+
+except Exception as e:
+    st.warning(f"Could not load Product table: {e}. (Make sure 'product_performance' exists in Athena)")
