@@ -9,6 +9,13 @@ st.title("📊 GlobalPartners Order Analytics")
 st.markdown("""
     *Automated daily refresh from AWS Athena @ 8:00 AM.* Use the sidebar to filter by segment and explore tailored metrics.
 """)
+
+# testing ci/cd 
+# st.divider()
+# st.header("testing change code, CI/CD should trigger and deploy this change to the dashboard")
+
+
+
 # 1. Connection Logic
 # Note: Locally, this uses your AWS CLI credentials. On ECS, it uses the Task Role.
 DATABASE = "globalpartners_gold_db"
@@ -691,34 +698,3 @@ This is **{abs(aov_lift):.1f}% {"higher" if aov_lift > 0 else "lower"}** than fu
 
 
 
-
-
-# --- New Section: Product Performance ---
-st.divider()
-st.header("📦 TESTING 2 Product Performance")
-
-try:
-    # 1. Load the new table
-    df_products = load_gold_data("product_performance")
-    
-    # 2. Add a simple visualization
-    col_p1, col_p2 = st.columns(2)
-    
-    with col_p1:
-        st.subheader("Top Products by Revenue")
-        fig_prod = px.bar(
-            df_products.sort_values('total_revenue', ascending=False).head(10),
-            x='product_name', 
-            y='total_revenue',
-            color='category',
-            title="Top 10 Products"
-        )
-        st.plotly_chart(fig_prod, use_container_width=True)
-        
-    with col_p2:
-        st.subheader("Category Distribution")
-        fig_cat = px.pie(df_products, values='total_revenue', names='category', hole=0.4)
-        st.plotly_chart(fig_cat, use_container_width=True)
-
-except Exception as e:
-    st.warning(f"Could not load Product table: {e}. (Make sure 'product_performance' exists in Athena)")
