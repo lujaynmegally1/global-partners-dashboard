@@ -11,8 +11,8 @@ st.markdown("""
 """)
 
 # testing ci/cd 
-# st.divider()
-# st.header("testing change code, CI/CD should trigger and deploy this change to the dashboard")
+st.divider()
+st.header("testing - CI/CD should trigger and deploy this change to the dashboard")
 
 
 
